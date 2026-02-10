@@ -15,7 +15,7 @@
 ### 一条命令（PowerShell）
 
 ```powershell
-$s = if (try { dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.App 8\.' } catch {}) { '-compact' } else { '' }; irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$s.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
+$s=''; try { if (dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.App 8\.') { $s='-compact' } } catch {}; irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$s.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
 ```
 
 自动检测 .NET 8 Desktop Runtime：有则下载精简版（~96 KB），无则下载完整版（~63 MB）。
