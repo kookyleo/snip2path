@@ -15,8 +15,10 @@ Lightweight Windows screen-capture tool that lives in the system tray. Snip a re
 ### One-liner (PowerShell)
 
 ```powershell
-irm https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64.zip -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip -DestinationPath "$env:LOCALAPPDATA\Snip2Path" -Force; & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
+$n = if (try { dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.App 8\.' } catch { $false }) { 'compact' } else { '' }; $u = "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$($n ? "-$n" : '').zip"; irm $u -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
 ```
+
+Auto-detects .NET 8 Desktop Runtime: downloads compact (~96 KB) if present, full (~63 MB) otherwise.
 
 ### Manual
 
