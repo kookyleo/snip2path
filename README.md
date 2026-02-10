@@ -46,11 +46,7 @@ Requires [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 dotnet build src/Snip2Path/Snip2Path.csproj
 ```
 
-To publish both release variants:
-
-```
-publish.bat
-```
+Releases are built automatically via GitHub Actions when a version tag is pushed (`git tag v1.0.0 && git push --tags`).
 
 ## License
 

@@ -46,11 +46,7 @@ irm https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win
 dotnet build src/Snip2Path/Snip2Path.csproj
 ```
 
-发布两个版本：
-
-```
-publish.bat
-```
+推送版本标签后 GitHub Actions 会自动构建发布（`git tag v1.0.0 && git push --tags`）。
 
 ## 许可证
 
