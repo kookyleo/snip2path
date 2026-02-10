@@ -18,7 +18,8 @@ static class Program
 
         try
         {
-            ApplicationConfiguration.Initialize();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TrayApplicationContext());
         }
         finally

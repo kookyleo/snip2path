@@ -15,21 +15,21 @@
 ### 一条命令（PowerShell）
 
 ```powershell
-$s = if (Test-Path "$env:ProgramFiles\dotnet\shared\Microsoft.WindowsDesktop.App\8.*") { '-compact' } else { '' }; irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$s.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; $ws=New-Object -ComObject WScript.Shell; $sc=$ws.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Snip2Path.lnk"); $sc.TargetPath="$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"; $sc.WorkingDirectory="$env:LOCALAPPDATA\Snip2Path"; $sc.Save(); & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
+irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; $ws=New-Object -ComObject WScript.Shell; $sc=$ws.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Snip2Path.lnk"); $sc.TargetPath="$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"; $sc.WorkingDirectory="$env:LOCALAPPDATA\Snip2Path"; $sc.Save(); & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
 ```
 
 该命令会：
-- 自动检测 .NET 8 Desktop Runtime：有则下载精简版（~96 KB），无则下载完整版（~63 MB）
+- 下载 Snip2Path（~1 MB）
 - 安装到 `%LOCALAPPDATA%\Snip2Path`
 - 创建开始菜单快捷方式
 - 启动应用
 
+无需安装任何运行时，Windows 10/11 开箱即用。
+
 ### 手动安装
 
 1. 前往 [Releases](https://github.com/kookyleo/snip2path/releases/latest)
-2. 下载：
-   - **Snip2Path-win-x64.zip**（~69 MB）—— 自包含，无需安装运行时
-   - **Snip2Path-win-x64-compact.zip**（~180 KB）—— 需要 [.NET 8 桌面运行时](https://dotnet.microsoft.com/download/dotnet/8.0)
+2. 下载 **Snip2Path.zip**（~1 MB）
 3. 解压后运行 `Snip2Path.exe`
 
 ## 使用
@@ -47,7 +47,7 @@ $s = if (Test-Path "$env:ProgramFiles\dotnet\shared\Microsoft.WindowsDesktop.App
 
 ## 从源码构建
 
-需要 [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)。
+需要 [.NET SDK](https://dotnet.microsoft.com/download)。
 
 ```
 dotnet build src/Snip2Path/Snip2Path.csproj
