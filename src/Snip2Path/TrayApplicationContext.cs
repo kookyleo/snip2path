@@ -1,4 +1,5 @@
 using System.Drawing;
+using Microsoft.Win32;
 
 namespace Snip2Path;
 
@@ -55,6 +56,17 @@ sealed class TrayApplicationContext : ApplicationContext
         menu.Items.Add($"Capture ({_settings.ToDisplayString()})", null, (_, _) => OnHotkeyPressed());
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Change Hotkey...", null, (_, _) => OnChangeHotkey());
+
+        var startupItem = new ToolStripMenuItem("Start with Windows");
+        startupItem.Checked = IsStartupEnabled();
+        startupItem.Click += (_, _) =>
+        {
+            bool enable = !startupItem.Checked;
+            SetStartupEnabled(enable);
+            startupItem.Checked = enable;
+        };
+        menu.Items.Add(startupItem);
+
         menu.Items.Add("About", null, (_, _) => OnAbout());
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, (_, _) => ExitApplication());
@@ -161,6 +173,27 @@ sealed class TrayApplicationContext : ApplicationContext
         {
             menu.Items[0].Text = $"Capture ({display})";
         }
+    }
+
+    private const string StartupRegistryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+    private const string StartupValueName = "Snip2Path";
+
+    private static bool IsStartupEnabled()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, false);
+        return key?.GetValue(StartupValueName) is string val
+            && val.Equals(Application.ExecutablePath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void SetStartupEnabled(bool enable)
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
+        if (key == null) return;
+
+        if (enable)
+            key.SetValue(StartupValueName, Application.ExecutablePath);
+        else
+            key.DeleteValue(StartupValueName, false);
     }
 
     private static void OnAbout()

@@ -18,7 +18,11 @@
 $s=''; try { if (dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.App 8\.') { $s='-compact' } } catch {}; irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$s.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; $ws=New-Object -ComObject WScript.Shell; $sc=$ws.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Snip2Path.lnk"); $sc.TargetPath="$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"; $sc.WorkingDirectory="$env:LOCALAPPDATA\Snip2Path"; $sc.Save(); & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
 ```
 
-自动检测 .NET 8 Desktop Runtime：有则下载精简版（~96 KB），无则下载完整版（~63 MB）。
+该命令会：
+- 自动检测 .NET 8 Desktop Runtime：有则下载精简版（~96 KB），无则下载完整版（~63 MB）
+- 安装到 `%LOCALAPPDATA%\Snip2Path`
+- 创建开始菜单快捷方式
+- 启动应用
 
 ### 手动安装
 
@@ -37,6 +41,7 @@ $s=''; try { if (dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.
 | 点击窗口 | 截取整个窗口 |
 | 右键 / `Esc` | 取消截图 |
 | 托盘菜单 > Change Hotkey... | 自定义快捷键 |
+| 托盘菜单 > Start with Windows | 切换开机启动 |
 
 截图保存为 PNG 到 `%TEMP%`，路径自动复制到剪贴板。
 

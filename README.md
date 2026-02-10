@@ -18,7 +18,11 @@ Lightweight Windows screen-capture tool that lives in the system tray. Snip a re
 $s=''; try { if (dotnet --list-runtimes 2>$null | Select-String 'WindowsDesktop.App 8\.') { $s='-compact' } } catch {}; irm "https://github.com/kookyleo/snip2path/releases/latest/download/Snip2Path-win-x64$s.zip" -OutFile $env:TEMP\s2p.zip; Expand-Archive $env:TEMP\s2p.zip "$env:LOCALAPPDATA\Snip2Path" -Force; $ws=New-Object -ComObject WScript.Shell; $sc=$ws.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Snip2Path.lnk"); $sc.TargetPath="$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"; $sc.WorkingDirectory="$env:LOCALAPPDATA\Snip2Path"; $sc.Save(); & "$env:LOCALAPPDATA\Snip2Path\Snip2Path.exe"
 ```
 
-Auto-detects .NET 8 Desktop Runtime: downloads compact (~96 KB) if present, full (~63 MB) otherwise.
+This will:
+- Auto-detect .NET 8 Desktop Runtime: download compact (~96 KB) if present, full (~63 MB) otherwise
+- Install to `%LOCALAPPDATA%\Snip2Path`
+- Create a Start Menu shortcut
+- Launch the app
 
 ### Manual
 
@@ -37,6 +41,7 @@ Auto-detects .NET 8 Desktop Runtime: downloads compact (~96 KB) if present, full
 | Click a window | Capture that window |
 | Right-click / `Esc` | Cancel capture |
 | Tray menu > Change Hotkey... | Customize the hotkey |
+| Tray menu > Start with Windows | Toggle launch on login |
 
 The captured image is saved as PNG in `%TEMP%` and the path is copied to clipboard.
 
